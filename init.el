@@ -26,7 +26,7 @@
 
 (setq package-archives
       '(("gnu"          . "https://elpa.gnu.org/packages/")
-        ("melpa"        . "https://melpa.org/packages/")
+        ("melpa"        . "http://melpa.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
         ("org"          . "https://orgmode.org")))
 
@@ -49,7 +49,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(autothemer company counsel doom-modeline evil-collection
+   '(autothemer company counsel doom-modeline evil-collection flycheck
 		github-emacs-theme lsp-mode lsp-ui magit
 		solarized-theme zenburn-theme)))
 (custom-set-faces
@@ -102,11 +102,12 @@
   :init
   (setq lsp-keymap-prefix "C-c l"
 	read-process-output-max (* 1024 1024)
-	lsp-completion-provider :capf)
+	lsp-completion-providernn :capf)
   :hook ((c-mode . lsp-deferred)
          (c++-mode . lsp-deferred))
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  (setq lsp-diagnostics-provider :flycheck))
 
 (use-package lsp-ui
   :ensure t
@@ -134,3 +135,14 @@
               ("C-p" . company-select-previous) ; Предыдущий элемент
               ("<tab>" . company-complete-common-or-cycle)
               ("<escape>" . company-abort)))
+
+(use-package flycheck
+  :ensure t
+  :config
+  ;; Включаем встроенный режим аннотаций в конце строки
+  (global-flycheck-annotate-mode))
+
+(defun goto-config ()
+  "opens emacs config"
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
